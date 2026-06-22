@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: churras-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: churras
+    ports:
+      - '5433:5432'
+    volumes:
+      - churras_pgdata:/var/lib/postgresql/data
+
+volumes:
+  churras_pgdata:
