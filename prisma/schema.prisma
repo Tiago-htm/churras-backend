@@ -49,27 +49,36 @@ enum Extras {
   GELO
 }
 
-model Climate {
-  uuid            String  @id @default(uuid())
-  climate         String
-  temperature     Int
-  city            String
-  grills          Grill[]
-}
-
 model Grill {
-  uuid        String  @id @default(uuid())
+  uuid        String       @id @default(uuid())
   name        String
   date        DateTime
   duration    Float
   adult       Int
   kids        Int
   isVegan     Boolean
+  city        String
   userUuid    String
-  climateUuid String
-  user        User    @relation(fields: [userUuid], references: [uuid])
-  climate     Climate @relation(fields: [climateUuid], references: [uuid])
+  user        User         @relation(fields: [userUuid], references: [uuid])
   items       Item[]
+  comprovante Comprovante?
+}
+
+model Climate {
+  uuid        String       @id @default(uuid())
+  climate     String
+  temperature Int
+  city        String
+  comprovante Comprovante?
+}
+
+model Comprovante {
+  uuid        String   @id @default(uuid())
+  grillUuid   String   @unique
+  climateUuid String   @unique
+  grill       Grill    @relation(fields: [grillUuid], references: [uuid])
+  climate     Climate  @relation(fields: [climateUuid], references: [uuid])
+  createdAt   DateTime @default(now())
 }
 
 model Item {
@@ -79,8 +88,8 @@ model Item {
   vegetable Vegetables?
   drink     Drinks?
   extra     Extras?
-  quantity  Float?
-  weight    String?
+  quantity  Float?      
+  weight    Float?      
   grillUuid String
   grill     Grill       @relation(fields: [grillUuid], references: [uuid])
 }

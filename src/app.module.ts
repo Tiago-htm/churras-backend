@@ -4,6 +4,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { envSchema } from './env.validation';
 import { ClimateModule } from './climate/climate.module';
+import { GrillModule } from './grill/grill.module';
+import { ComprovanteModule } from './comprovante/comprovante.module';
 
 @Module({
   imports: [
@@ -12,6 +14,8 @@ import { ClimateModule } from './climate/climate.module';
       validate: (config) => envSchema.parse(config),
     }),
     ClimateModule,
+    GrillModule,
+    ComprovanteModule,
   ],
   controllers: [AppController],
   providers: [AppService],
