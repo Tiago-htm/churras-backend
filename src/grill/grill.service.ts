@@ -18,7 +18,7 @@ export class GrillService {
     private readonly comprovanteService: ComprovanteService,
   ) {}
 
-  async create(dto: CreateGrillDto) {
+  async create(dto: CreateGrillDto, userUuid: string) {
     const pessoas = calcularPessoas(dto.adult, dto.kids);
 
     const grill = await this.prisma.grill.create({
@@ -30,7 +30,7 @@ export class GrillService {
         kids: dto.kids,
         isVegan: dto.isVegan,
         city: dto.city,
-        userUuid: dto.userUuid,
+        userUuid,
       },
     });
 

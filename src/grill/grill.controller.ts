@@ -2,7 +2,8 @@ import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { GrillService } from './grill.service';
 import { CreateGrillDto } from './dto/create-grill.dto';
-
+import { CurrentUser } from '../auth/current-user.decorator';
+import type { AuthPayload } from 'src/auth/interfaces/auth-payload';
 @ApiTags('Grill')
 @Controller('grill')
 export class GrillController {
@@ -10,8 +11,8 @@ export class GrillController {
 
   @Post()
   @ApiOperation({ summary: 'Cria um churrasco e gera o comprovante automaticamente' })
-  create(@Body() dto: CreateGrillDto) {
-    return this.grillService.create(dto);
+  create(@Body() dto: CreateGrillDto, @CurrentUser() user: AuthPayload) {
+    return this.grillService.create(dto, user.uuid);
   }
 
   @Get()

@@ -6,6 +6,7 @@ import { envSchema } from './env.validation';
 import { ClimateModule } from './climate/climate.module';
 import { GrillModule } from './grill/grill.module';
 import { ComprovanteModule } from './comprovante/comprovante.module';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { ComprovanteModule } from './comprovante/comprovante.module';
     ClimateModule,
     GrillModule,
     ComprovanteModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

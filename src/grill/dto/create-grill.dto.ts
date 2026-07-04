@@ -8,7 +8,6 @@ export class CreateGrillDto {
   kids: number;
   isVegan: boolean;
   city: string;
-  userUuid: string;
   meats: Meat[];
   sides: Sides[];
   vegetables: Vegetables[];
