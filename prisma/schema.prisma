@@ -47,6 +47,7 @@ enum Drinks {
 enum Extras {
   CARVAO
   GELO
+  SAL_GROSSO
 }
 
 model Grill {

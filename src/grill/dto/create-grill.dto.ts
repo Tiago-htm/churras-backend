@@ -1,4 +1,4 @@
-import { Meat, Sides, Vegetables, Drinks } from '../../../generated/prisma/client';
+import { Meat, Sides, Vegetables, Drinks, Extras } from '../../../generated/prisma/client';
 
 export class CreateGrillDto {
   name: string;
@@ -8,8 +8,9 @@ export class CreateGrillDto {
   kids: number;
   isVegan: boolean;
   city: string;
-  meats: Meat[];
-  sides: Sides[];
-  vegetables: Vegetables[];
-  drinks: Drinks[];
+  meats?: Meat[];
+  sides?: Sides[];
+  vegetables?: Vegetables[];
+  drinks?: Drinks[];
+  extras?: Extras[]; //depois arrumar pra funcionar conforme pedido da nicole...
 }

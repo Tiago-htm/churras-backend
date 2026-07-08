@@ -13,13 +13,13 @@ export class AuthController {
   @Post('create')
   @ApiOperation({ summary: 'Cria um novo usuário' })
   create(@Body() dto: CreateAuthDto) {
-    return this.authService.create(dto.email, dto.senha, dto.name);
+    return this.authService.create(dto.email, dto.password, dto.name);
   }
 
   @Post('login')
   @ApiOperation({ summary: 'Login' })
   async login(@Body() dto: LoginAuthDto, @Res({ passthrough: true }) res: Response) {
-    const resposta = await this.authService.login(dto.email, dto.senha);
+    const resposta = await this.authService.login(dto.email, dto.password);
 
     res.cookie('token', resposta.token, {
       httpOnly: true,
