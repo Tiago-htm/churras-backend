@@ -39,4 +39,10 @@ export class AuthController {
     return { success: true };
   }
 
+
+  @Get('me')
+  me(@Req() req:Request){
+    return (req as any).user
+  }
+
 }
