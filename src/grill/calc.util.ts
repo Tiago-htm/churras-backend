@@ -8,7 +8,7 @@ const MEAT_KG_POR_PESSOA: Record<Meat, number> = {
 };
 
 const DRINK_L_POR_PESSOA: Record<Drinks, number> = {
-  CERVEJA: 1.2,
+  CERVEJA: 0.5,
   REFRIGERANTE: 0.3,
   AGUA: 0.3,
   SUCO: 0.3,

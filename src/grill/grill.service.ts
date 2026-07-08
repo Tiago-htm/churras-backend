@@ -151,10 +151,27 @@ export class GrillService {
   );
 }
 
-  async findAll() {
-    return this.prisma.grill.findMany();
-  }
 
+  async findAll(userUuid: string) {
+    const grills = await this.prisma.grill.findMany({
+      where: { userUuid },
+      select: {
+        uuid: true,
+        name: true,
+        adults: true,
+        kids: true,
+        date: true,
+      },
+      orderBy: { date: 'asc' },
+    });
+
+    return grills.map((grill) => ({
+      uuid: grill.uuid,
+      name: grill.name,
+      pessoas: grill.adults + grill.kids,
+      date: grill.date,
+    }));
+  }
   async findByUuid(uuid: string) {
     const grill = await this.prisma.grill.findUnique({
       where: { uuid },

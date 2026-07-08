@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiCookieAuth } from '@nestjs/swagger';
 import type { Response } from 'express';
 import { AuthService } from './auth.service';
@@ -38,4 +38,5 @@ export class AuthController {
     res.clearCookie('token');
     return { success: true };
   }
+
 }

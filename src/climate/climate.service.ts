@@ -33,7 +33,6 @@ export class ClimateService {
     });
   }
 
-  // Busca lat/long a partir do nome da cidade
   private async getCoordinates(city: string) {
     const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=pt`;
     const response = await fetch(url);
@@ -47,7 +46,6 @@ export class ClimateService {
     return { latitude, longitude };
   }
 
-  // Busca o clima (descrição + temperatura) pra uma data específica, usando lat/long
   private async getClimate(lat: number, lon: number, date: string) {
     const url =
       `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
