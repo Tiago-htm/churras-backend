@@ -81,75 +81,75 @@ export class GrillService {
     });
   }
 
-  async update(grillUuid: string, dto: UpdateGrillDto, userUuid: string) {
-  const existing = await this.prisma.grill.findFirstOrThrow({
-    where: { uuid: grillUuid, userUuid },
-  });
+      async update(grillUuid: string, dto: UpdateGrillDto, userUuid: string) {
+        const existing = await this.prisma.grill.findFirstOrThrow({
+          where: { uuid: grillUuid, userUuid },
+        });
 
-  const merged = {
-    name: dto.name ?? existing.name,
-    date: dto.date ? new Date(dto.date) : existing.date,
-    time: dto.time ?? existing.time,
-    adults: dto.adults ?? existing.adults,
-    kids: dto.kids ?? existing.kids,
-    isVegan: dto.isVegan ?? existing.isVegan,
-    city: dto.city ?? existing.city,
-  };
+        const merged = {
+          name: dto.name ?? existing.name,
+          date: dto.date ? new Date(dto.date) : existing.date,
+          time: dto.time ?? existing.time,
+          adults: dto.adults ?? existing.adults,
+          kids: dto.kids ?? existing.kids,
+          isVegan: dto.isVegan ?? existing.isVegan,
+          city: dto.city ?? existing.city,
+        };
 
-  const pessoas = calcularPessoas(merged.adults, merged.kids);
+        const pessoas = calcularPessoas(merged.adults, merged.kids);
 
-  const grill = await this.prisma.grill.update({
-    where: { uuid: grillUuid },
-    data: merged,
-  });
+        const grill = await this.prisma.grill.update({
+          where: { uuid: grillUuid },
+          data: merged,
+        });
 
-  await this.prisma.item.deleteMany({ where: { grillUuid } });
-  await this.prisma.comprovante.deleteMany({ where: { grillUuid } });
+        await this.prisma.item.deleteMany({ where: { grillUuid } });
+        await this.prisma.comprovante.deleteMany({ where: { grillUuid } });
 
-  const itemsData: Prisma.ItemCreateManyInput[] = [
-    ...(dto.meats ?? []).map((meat) => ({
-      grillUuid: grill.uuid,
-      meat,
-      weight: calcularCarne(meat, pessoas),
-    })),
-    ...(dto.drinks ?? []).map((drink) => ({
-      grillUuid: grill.uuid,
-      drink,
-      quantity: calcularBebida(drink, pessoas),
-    })),
-    ...(dto.sides ?? []).map((side) => ({
-      grillUuid: grill.uuid,
-      side,
-      quantity: 1,
-    })),
-    ...(dto.vegetables ?? []).map((vegetable) => ({
-      grillUuid: grill.uuid,
-      vegetable,
-      quantity: 1,
-    })),
-  ];
+        const itemsData: Prisma.ItemCreateManyInput[] = [
+          ...(dto.meats ?? []).map((meat) => ({
+            grillUuid: grill.uuid,
+            meat,
+            weight: calcularCarne(meat, pessoas),
+          })),
+          ...(dto.drinks ?? []).map((drink) => ({
+            grillUuid: grill.uuid,
+            drink,
+            quantity: calcularBebida(drink, pessoas),
+          })),
+          ...(dto.sides ?? []).map((side) => ({
+            grillUuid: grill.uuid,
+            side,
+            quantity: 1,
+          })),
+          ...(dto.vegetables ?? []).map((vegetable) => ({
+            grillUuid: grill.uuid,
+            vegetable,
+            quantity: 1,
+          })),
+        ];
 
-  const carvao = calcularCarvao(pessoas);
-  const gelo = calcularGelo(carvao);
-  itemsData.push(
-    { grillUuid: grill.uuid, extra: 'CARVAO', quantity: carvao },
-    { grillUuid: grill.uuid, extra: 'GELO', quantity: gelo },
-  );
+        const carvao = calcularCarvao(pessoas);
+        const gelo = calcularGelo(carvao);
+        itemsData.push(
+          { grillUuid: grill.uuid, extra: 'CARVAO', quantity: carvao },
+          { grillUuid: grill.uuid, extra: 'GELO', quantity: gelo },
+        );
 
-  await this.prisma.item.createMany({ data: itemsData });
+        await this.prisma.item.createMany({ data: itemsData });
 
-  const comprovante = await this.comprovanteService.create({
-    grillUuid: grill.uuid,
-    city: merged.city,
-    date: merged.date.toISOString(),
-  });
+        const comprovante = await this.comprovanteService.create({
+          grillUuid: grill.uuid,
+          city: merged.city,
+          date: merged.date.toISOString(),
+        });
 
-  return plainToInstance(
-    CreateGrillResponseDto,
-    { grill, comprovante },
-    { excludeExtraneousValues: true },
-  );
-}
+        return plainToInstance(
+          CreateGrillResponseDto,
+          { grill, comprovante },
+          { excludeExtraneousValues: true },
+        );
+      }
 
 
 async findAll(userUuid: string) {

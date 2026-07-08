@@ -3,16 +3,17 @@ generator client {
   output       = "../generated/prisma"
   moduleFormat = "cjs"
 }
+
 datasource db {
   provider = "postgresql"
 }
 
 model User {
-  uuid   String  @id @default(uuid())
-  name   String
-  email  String  @unique
+  uuid     String  @id @default(uuid())
+  name     String
+  email    String  @unique
   password String
-  grills Grill[]
+  grills   Grill[]
 }
 
 enum Meat {
@@ -55,7 +56,7 @@ model Grill {
   name        String
   date        DateTime
   time        String
-  adults       Int
+  adults      Int
   kids        Int
   isVegan     Boolean
   city        String
@@ -77,7 +78,7 @@ model Comprovante {
   uuid        String   @id @default(uuid())
   grillUuid   String   @unique
   climateUuid String   @unique
-  grill       Grill    @relation(fields: [grillUuid], references: [uuid])
+  grill       Grill    @relation(fields: [grillUuid], references: [uuid], onDelete: Cascade)
   climate     Climate  @relation(fields: [climateUuid], references: [uuid])
   createdAt   DateTime @default(now())
 }
@@ -89,8 +90,8 @@ model Item {
   vegetable Vegetables?
   drink     Drinks?
   extra     Extras?
-  quantity  Float?      
-  weight    Float?      
+  quantity  Float?
+  weight    Float?
   grillUuid String
-  grill     Grill       @relation(fields: [grillUuid], references: [uuid])
+  grill     Grill       @relation(fields: [grillUuid], references: [uuid], onDelete: Cascade)
 }

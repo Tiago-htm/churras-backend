@@ -57,8 +57,10 @@ export class ClimateService {
   }
 
   private async getClimate(lat: number, lon: number, date: string) {
+  const dataFormatada = date.split('T')[0]; 
+
   const today = new Date();
-  const targetDate = new Date(date);
+  const targetDate = new Date(dataFormatada);
   const diffDays = Math.ceil((targetDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
 
   if (diffDays > 16) {
@@ -69,12 +71,12 @@ export class ClimateService {
 
   const url =
     `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
-    `&daily=temperature_2m_max,weathercode&timezone=auto&start_date=${date}&end_date=${date}`;
+    `&daily=temperature_2m_max,weathercode&timezone=auto&start_date=${dataFormatada}&end_date=${dataFormatada}`;
   const response = await fetch(url);
   const data = await response.json();
 
   if (!data.daily || data.daily.time.length === 0) {
-    throw new BadRequestException(`Sem previsão disponível para ${date}`);
+    throw new BadRequestException(`Sem previsão disponível para ${dataFormatada}`);
   }
 
   const weatherCode = data.daily.weathercode[0];

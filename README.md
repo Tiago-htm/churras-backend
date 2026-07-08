@@ -21,7 +21,7 @@ Backend de um sistema para planejamento e cálculo de churrascos.
 Clone o repositório e instale as dependências:
 
 ```bash
-git clone <url-do-repositorio>
+git clone na url desse repositório.
 cd churras-backend
 npm install
 ```
