@@ -25,7 +25,7 @@ export class GrillService {
       data: {
         name: dto.name,
         date: new Date(dto.date),
-        duration: dto.duration,
+        duration: 1,
         adult: dto.adult,
         kids: dto.kids,
         isVegan: dto.isVegan,
@@ -35,22 +35,22 @@ export class GrillService {
     });
 
     const itemsData: Prisma.ItemCreateManyInput[] = [
-      ...dto.meats.map((meat) => ({
+      ...(dto.meats ?? []).map((meat) => ({
         grillUuid: grill.uuid,
         meat,
         weight: calcularCarne(meat, pessoas),
       })),
-      ...dto.drinks.map((drink) => ({
+      ...(dto.drinks ?? []).map((drink) => ({
         grillUuid: grill.uuid,
         drink,
         quantity: calcularBebida(drink, pessoas),
       })),
-      ...dto.sides.map((side) => ({
+      ...(dto.sides ?? []).map((side) => ({
         grillUuid: grill.uuid,
         side,
         quantity: 1,
       })),
-      ...dto.vegetables.map((vegetable) => ({
+      ...(dto.vegetables ?? []).map((vegetable) => ({
         grillUuid: grill.uuid,
         vegetable,
         quantity: 1,

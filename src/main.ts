@@ -9,18 +9,21 @@ import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.use(cookieParser());
+
   app.enableCors({
-    origin: 'http://localhost:4200',
+    origin: [
+      'http://localhost:4200',
+      'http://192.168.0.20:4200',
+    ],
     credentials: true,
   });
 
-  
-
   app.useGlobalPipes(new ValidationPipe({
-      whitelist: true, 
-      forbidNonWhitelisted: true, 
-      transform: true, 
-    }));
+    whitelist: true,
+    forbidNonWhitelisted: true,
+    transform: true,
+  }));
 
   const config = new DocumentBuilder()
     .setTitle('Churrasco API')
@@ -31,8 +34,7 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('', app, document);
-  
-  app.use(cookieParser());
-  await app.listen(3000);
+
+  await app.listen(3000, '0.0.0.0');
 }
 bootstrap();

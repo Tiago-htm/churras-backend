@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -7,6 +7,7 @@ import { ClimateModule } from './climate/climate.module';
 import { GrillModule } from './grill/grill.module';
 import { ComprovanteModule } from './comprovante/comprovante.module';
 import { AuthModule } from 'src/auth/auth.module';
+import { AuthMiddleware } from 'src/auth/auth.middleware';
 
 @Module({
   imports: [
@@ -22,4 +23,14 @@ import { AuthModule } from 'src/auth/auth.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AuthMiddleware)
+      .exclude(
+        { path: 'auth/login', method: RequestMethod.POST },
+        { path: 'auth/create', method: RequestMethod.POST }, // ou o path certo do seu create de usuário
+      )
+      .forRoutes('*'); // aplica em todas as rotas, exceto as excluídas
+  }
+}

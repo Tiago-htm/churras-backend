@@ -12,7 +12,7 @@ export class AuthController {
 
   @Post('create')
   @ApiOperation({ summary: 'Cria um novo usuário' })
-  create(@Body() dto: CreateAuthDto) {
+  create(@Body() dto: CreatetimeAuthDto) {
     return this.authService.create(dto.email, dto.password, dto.name);
   }
 
@@ -23,11 +23,13 @@ export class AuthController {
 
     res.cookie('token', resposta.token, {
       httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
-    });
+      secure: true,
+      sameSite: 'none',
+      maxAge: 24 * 60 * 60 * 1000,
 
+    });
     return { success: true };
+
   }
 
   @Post('logout')
