@@ -1,15 +1,8 @@
 
 /node_modules
-
-
 /dist
-
-
 /generated/prisma
-
-
 .env
 .env.local
-
 *.log
 .DS_Store

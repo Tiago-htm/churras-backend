@@ -8,14 +8,24 @@ const WEATHER_CODE_MAP: Record<number, string> = {
   2: 'Parcialmente nublado',
   3: 'Nublado',
   45: 'Neblina',
+  48: 'Neblina com geada',
   51: 'Garoa fraca',
+  53: 'Garoa moderada',
+  55: 'Garoa forte',
+  56: 'Garoa congelante fraca',
+  57: 'Garoa congelante forte',
   61: 'Chuva fraca',
   63: 'Chuva moderada',
   65: 'Chuva forte',
-  80: 'Pancadas de chuva',
+  66: 'Chuva congelante fraca',
+  67: 'Chuva congelante forte',
+  80: 'Pancadas de chuva fracas',
+  81: 'Pancadas de chuva moderadas',
+  82: 'Pancadas de chuva violentas',
   95: 'Tempestade',
+  96: 'Tempestade com granizo fraco',
+  99: 'Tempestade com granizo forte',
 };
-
 @Injectable()
 export class ClimateService {
   constructor(private readonly prisma: PrismaService) {}

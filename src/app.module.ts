@@ -29,8 +29,8 @@ export class AppModule implements NestModule {
       .apply(AuthMiddleware)
       .exclude(
         { path: 'auth/login', method: RequestMethod.POST },
-        { path: 'auth/create', method: RequestMethod.POST }, // ou o path certo do seu create de usuário
+        { path: 'auth/create', method: RequestMethod.POST }, 
       )
-      .forRoutes('*'); // aplica em todas as rotas, exceto as excluídas
+      .forRoutes('*'); 
   }
 }
