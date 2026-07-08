@@ -47,21 +47,30 @@ export class ClimateService {
   }
 
   private async getClimate(lat: number, lon: number, date: string) {
-    const url =
-      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
-      `&daily=temperature_2m_max,weathercode&timezone=auto&start_date=${date}&end_date=${date}`;
+  const today = new Date();
+  const targetDate = new Date(date);
+  const diffDays = Math.ceil((targetDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
 
-    const response = await fetch(url);
-    const data = await response.json();
-
-    if (!data.daily || data.daily.time.length === 0) {
-      throw new BadRequestException(`Sem previsão disponível para ${date}`);
-    }
-
-    const weatherCode = data.daily.weathercode[0];
-    const temperature = Math.round(data.daily.temperature_2m_max[0]);
-    const climate = WEATHER_CODE_MAP[weatherCode] ?? 'Desconhecido';
-
-    return { climate, temperature };
+  if (diffDays > 16) {
+    throw new BadRequestException(
+      `Previsão do tempo só está disponível até 16 dias no futuro. Escolha uma data mais próxima.`,
+    );
   }
+
+  const url =
+    `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
+    `&daily=temperature_2m_max,weathercode&timezone=auto&start_date=${date}&end_date=${date}`;
+  const response = await fetch(url);
+  const data = await response.json();
+
+  if (!data.daily || data.daily.time.length === 0) {
+    throw new BadRequestException(`Sem previsão disponível para ${date}`);
+  }
+
+  const weatherCode = data.daily.weathercode[0];
+  const temperature = Math.round(data.daily.temperature_2m_max[0]);
+  const climate = WEATHER_CODE_MAP[weatherCode] ?? 'Desconhecido';
+
+  return { climate, temperature };
+}
 }
