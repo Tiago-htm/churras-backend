@@ -161,6 +161,7 @@ export class GrillService {
         adults: true,
         kids: true,
         date: true,
+        time: true,
       },
       orderBy: { date: 'asc' },
     });
@@ -170,6 +171,7 @@ export class GrillService {
       name: grill.name,
       pessoas: grill.adults + grill.kids,
       date: grill.date,
+      time: grill.time
     }));
   }
   async findByUuid(uuid: string) {
