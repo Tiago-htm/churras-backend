@@ -16,11 +16,10 @@ async function bootstrap() {
   app.use(cookieParser());
 
   app.enableCors({
-    origin: [
-      'http://localhost:4200',
-      'http://192.168.0.20:4200',
-    ],
-    credentials: true,
+    origin: 'http://localhost:4200', // URL do seu frontend
+    credentials: true, // 🔑 ISSO É CRUCIAL
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   });
 
   app.useGlobalPipes(new ValidationPipe({

@@ -23,9 +23,10 @@ export class AuthController {
 
     res.cookie('token', resposta.token, {
       httpOnly: true,
-      secure: true,
-      sameSite: 'none',
+      secure: false,
+      sameSite: 'lax',
       maxAge: 24 * 60 * 60 * 1000,
+      path: '/',
 
     });
     return { success: true };
