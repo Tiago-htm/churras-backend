@@ -152,40 +152,57 @@ export class GrillService {
 }
 
 
-  async findAll(userUuid: string) {
-    const grills = await this.prisma.grill.findMany({
-      where: { userUuid },
-      select: {
-        uuid: true,
-        name: true,
-        adults: true,
-        kids: true,
-        date: true,
-        time: true,
+async findAll(userUuid: string) {
+  const grills = await this.prisma.grill.findMany({
+    where: { userUuid },
+    select: {
+      uuid: true,
+      name: true,
+      adults: true,
+      kids: true,
+      date: true,
+      time: true,
+      comprovante: {
+        select: {
+          uuid: true,
+        },
       },
-      orderBy: { date: 'asc' },
-    });
+    },
+  });
 
-    return grills.map((grill) => ({
-      uuid: grill.uuid,
-      name: grill.name,
-      pessoas: grill.adults + grill.kids,
-      date: grill.date,
-      time: grill.time
-    }));
+  return grills.map((grill) => ({
+    uuid: grill.uuid,
+    name: grill.name,
+    pessoas: grill.adults + grill.kids,
+    date: grill.date,
+    time: grill.time,
+    comprovante: grill.comprovante?.uuid ?? null, 
+  }));
+}
+async findByUuid(uuid: string) {
+  const grill = await this.prisma.grill.findFirst({
+    where: { uuid },
+    select: {
+      uuid: true,
+      name: true,
+      adults: true,
+      kids: true,
+      date: true,
+      time: true,
+      comprovante: {
+        select: {
+          uuid: true,
+        },
+      },
+    },
+  });
+
+  if (!grill) {
+    throw new NotFoundException('Churrasco não encontrado');
   }
-  async findByUuid(uuid: string) {
-    const grill = await this.prisma.grill.findUnique({
-      where: { uuid },
-      include: { items: true },
-    });
 
-    if (!grill) {
-      throw new NotFoundException('Churrasco não encontrado');
-    }
-
-    return grill;
-  }
+  return grill;
+}
 
   async remove(uuid: string) {
     await this.findByUuid(uuid);
