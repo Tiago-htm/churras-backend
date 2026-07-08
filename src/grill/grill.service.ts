@@ -10,6 +10,8 @@ import {
   calcularCarvao,
   calcularGelo,
 } from './calc.util';
+import { plainToInstance } from 'class-transformer';
+import { CreateGrillResponseDto } from 'src/grill/dto/create-grill-response.dto';
 
 @Injectable()
 export class GrillService {
@@ -31,7 +33,7 @@ export class GrillService {
         isVegan: dto.isVegan,
         city: dto.city,
         userUuid,
-      },
+      }
     });
 
     const itemsData: Prisma.ItemCreateManyInput[] = [
@@ -67,13 +69,15 @@ export class GrillService {
 
     await this.prisma.item.createMany({ data: itemsData });
 
-    await this.comprovanteService.create({
+     const comprovante =  await this.comprovanteService.create({
       grillUuid: grill.uuid,
       city: dto.city,
       date: dto.date,
     });
 
-    return grill;
+    return plainToInstance(CreateGrillResponseDto, { grill, comprovante }, {
+      excludeExtraneousValues: true,
+    });
   }
 
   async findAll() {
