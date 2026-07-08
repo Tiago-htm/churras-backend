@@ -12,8 +12,8 @@ export class AuthController {
 
   @Post('create')
   @ApiOperation({ summary: 'Cria um novo usuário' })
-  create(@Body() dto: CreatetimeAuthDto) {
-    return this.authService.create(dto.email, dto.password, dto.name);
+  create(@Body() dto: CreateAuthDto) {
+    return this.authService.create(dto);
   }
 
   @Post('login')

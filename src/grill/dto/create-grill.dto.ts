@@ -27,14 +27,16 @@ export class CreateGrillDto {
   @ApiProperty({ example: 10 })
   @Type(() => Number)
   @IsInt()
-  @Min(0)
-  adult: number;
+  adults: number;
 
   @ApiProperty({ example: 3 })
   @Type(() => Number)
   @IsInt()
-  @Min(0)
   kids: number;
+
+  @ApiProperty()
+  @IsString()
+  time: string
 
   @ApiProperty({ example: false })
   @IsBoolean()

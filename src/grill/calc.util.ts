@@ -15,8 +15,8 @@ const DRINK_L_POR_PESSOA: Record<Drinks, number> = {
   ENERGETICO: 0.15,
 };
 
-export function calcularPessoas(adult: number, kids: number): number {
-  return adult + kids * 0.5;
+export function calcularPessoas(adults: number, kids: number): number {
+  return adults + kids * 0.5;
 }
 
 export function calcularCarne(meat: Meat, pessoas: number): number {

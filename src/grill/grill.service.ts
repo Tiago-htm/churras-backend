@@ -19,14 +19,14 @@ export class GrillService {
   ) {}
 
   async create(dto: CreateGrillDto, userUuid: string) {
-    const pessoas = calcularPessoas(dto.adult, dto.kids);
+    const pessoas = calcularPessoas(dto.adults, dto.kids);
 
     const grill = await this.prisma.grill.create({
       data: {
         name: dto.name,
         date: new Date(dto.date),
-        duration: 1,
-        adult: dto.adult,
+        time: dto.time,
+        adults: dto.adults,
         kids: dto.kids,
         isVegan: dto.isVegan,
         city: dto.city,

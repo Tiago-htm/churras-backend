@@ -5,9 +5,13 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import cookieParser from 'cookie-parser';
 import { ValidationPipe } from '@nestjs/common';
+import { setDefaultResultOrder } from 'dns';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+
+  setDefaultResultOrder('ipv4first');
 
   app.use(cookieParser());
 

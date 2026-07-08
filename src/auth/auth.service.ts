@@ -2,27 +2,28 @@ import { Injectable, BadRequestException, InternalServerErrorException } from '@
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import { PrismaService } from '../prisma/prisma.service';
+import { CreateAuthDto } from 'src/auth/dto/create-auth.dto';
 
 @Injectable()
 export class AuthService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(email: string, password: string, name: string) {
+  async create(dto:CreateAuthDto) {
+    try {
     const isUser = await this.prisma.user.findUnique({
-      where: { email },
-      select: { email: true },
-    });
+        where: { email: dto.email },
+        select: { email: true },
+      });
 
     if (isUser) {
-      console.log(`Tentativa de cadastro com e-mail já existente: ${email}`);
+      console.log(`Tentativa de cadastro com e-mail já existente: ${dto.email}`);
       throw new BadRequestException('Erro ao criar usuário');
     }
 
-    try {
-      const passwordHashed = await bcrypt.hash(password, 10);
+      const passwordHashed = await bcrypt.hash(dto.password, 10);
 
       const user = await this.prisma.user.create({
-        data: { email, password: passwordHashed, name },
+        data: { email: dto.email, password: passwordHashed, name: dto.name },
       });
       console.log('deu certo')
       return { uuid: user.uuid, email: user.email };
