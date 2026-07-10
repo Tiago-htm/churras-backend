@@ -189,6 +189,7 @@ async findByUuid(uuid: string) {
       kids: true,
       date: true,
       time: true,
+      items: true,
       comprovante: {
         select: {
           uuid: true,

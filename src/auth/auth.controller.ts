@@ -4,7 +4,8 @@ import type { Response } from 'express';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { LoginAuthDto } from './dto/login-auth.dto';
-
+import { CurrentUser } from 'src/auth/current-user.decorator';
+import type { AuthPayload } from 'src/auth/interfaces/auth-payload';
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
@@ -33,6 +34,13 @@ export class AuthController {
 
   }
 
+
+   @Get()
+   @ApiOperation({summary: 'busca User'})
+   getUser(@CurrentUser() user: AuthPayload) {
+     return this.authService.getUser(user.uuid);
+   }
+   
   @Post('logout')
   @ApiOperation({ summary: 'Logout' })
   logout(@Res({ passthrough: true }) res: Response) {

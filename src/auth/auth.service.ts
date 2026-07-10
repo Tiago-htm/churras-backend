@@ -8,6 +8,16 @@ import { CreateAuthDto } from 'src/auth/dto/create-auth.dto';
 export class AuthService {
   constructor(private readonly prisma: PrismaService) {}
 
+  async getUser(userUuid: string){
+    return this.prisma.user.findFirst({
+      where: {
+        uuid: userUuid
+      },
+      select: {
+        name: true
+      }
+    })
+  }
   async create(dto:CreateAuthDto) {
     try {
     const isUser = await this.prisma.user.findUnique({
